@@ -1,23 +1,6 @@
-// // const app = require("./app.js");
-
-// // app.sum(10, 30);
-// // app.div(40, 20);
-
-// // //when we exports multiple thing use this
-// // const { sum, div } = require("./app.js");
-
-// // sum(10, 12);
-// // div(89, 20);
-
-// // in morden way
-
-// import sum, { div } from "./app.js";
-
-// sum(10, 15);
-// div(10, 15);
 
 
-// core module
+//  1) core module
 
 // import fs from "fs";
 
@@ -46,5 +29,49 @@
 
 // console.log(path.basename(import.meta.url));
 
+//http 
 
+// import http from 'http';
+
+// const Server = http.createServer((req, res) => {
+//     res.writeHead(200, { "content-type": "text/plain" });
+//     res.end("Hello From Node Server !!");
+// });
+
+// Server.listen(3000, () => {
+//     console.log("Server is live");
+// })
+
+
+
+
+// 2) custom module
+
+// // const app = require("./app.js");
+
+ // app.sum(10, 30);
+ // app.div(40, 20);
+
+ // //when we exports multiple thing use this
+ // const { sum, div } = require("./app.js");
+
+ // sum(10, 12);
+ // div(89, 20);
+
+// // in morden way
+
+// import sum, { div } from "./app.js";
+
+// sum(10, 15);
+// div(10, 15);
+
+
+
+// 3) third-party module
+
+// import chalk from 'chalk'
+
+// console.log(chalk.green("success!"));
+// console.log(chalk.red("error!"));
+// console.log(chalk.blue("info message!"));
 
