@@ -1,0 +1,33 @@
+install package.json    ->   npm init -y 
+
+we can use it two way -> comman js 
+                      -> module 
+
+                      
+->module - core,userdefine,therd-party
+
+
+-> core module  - fs,path,http,os,url
+
+    node server.js -> for run server file 
+
+    FS - File-System module -> read,write,update and delete files
+
+        - fs.writeFileSync("file_name", "message you want to send " ) - to create a new file if is not exist, if exist then write in
+        
+        - fs.readFileSync() - to read file which is already exist. it return content written in the file
+        
+        - fs.appendFileSync() - to add content after existing contant in file
+
+    PATH - work with file folder path 
+
+        - path.basename(__filename) = give you current file name
+        - path.dirname(__filename) = give you directory or path of folder
+        - path.extname(__filename) = give you file extension 
+        - path.join(__dirname, "index.txt") = it join the file to the directory  
+
+    HTTP - used to create a simple web server in node.js
+    
+     - in the use of two methods we can create web server - http.createServer & server.liste
+
+
