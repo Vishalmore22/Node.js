@@ -49,10 +49,11 @@
 // const server = http.createServer((req, res) => {
 //     res.writeHead(200, { "contect-type": "text/plain" });//header define
 //     res.end(" IT'S YOUR NODE-SERVER");//send respons
-// })
+// }) 
 
 // // this function can live the server
 // server.listen(3000, () => {
 //     console.log("node server is  live");
 // })
 
+// 
