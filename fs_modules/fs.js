@@ -1,4 +1,3 @@
-import { log } from 'console';
 import fs from 'fs';
 
 // The FS Modules Lets You Interact With Your Computer's Files You Can Create,Read,Update And Rename Files 
@@ -52,3 +51,22 @@ import fs from 'fs';
 // delete file + folder
 // fs.unlinkSync("newFiles/message.txt"); -> 
 // fs.rmdirSync("newFiles");
+
+
+
+
+
+if (!fs.existsSync("data")) {
+    //existsSync -> check this folder exsit or not if is exsit code line start 63 but is not code line start from 60
+    fs.mkdirSync("data");//mkdirSync -> create this folder in directory 
+}
+
+fs.writeFileSync("data/info.txt", "this is info file");//in that folder we are create a file named info.txt by using writeFileSync
+const files = fs.readFileSync("data/info.txt", "utf-8");//get data from info.txt
+console.log(files);
+
+fs.renameSync("data/info.txt", "data/Update.txt");//rename file 
+fs.appendFileSync("data/Update.txt", "\nthis is Updated text");//add new content in file 
+
+console.log("all Files :", fs.readdirSync("data"));
+
