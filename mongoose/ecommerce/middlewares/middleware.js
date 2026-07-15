@@ -1,5 +1,7 @@
 import Auth from '../models/auth_model.js'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+
 export const signinValidation = async (req, res, next) => {
     try {
         const { email, password } = req.body;
@@ -25,5 +27,18 @@ export const signinValidation = async (req, res, next) => {
             err: err.message
 
         })
+    }
+}
+
+export const validateToken = async (req, res, next) => {
+    try {
+        const token = req.cookies.token;
+    } catch (err) {
+        res.status(400).json({
+            status: false,
+            message: "Token Invalid",
+            err: err.message
+        })
+
     }
 }
