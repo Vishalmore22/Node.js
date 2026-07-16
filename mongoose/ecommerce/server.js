@@ -2,6 +2,7 @@ import express from 'express';
 import routes from './routes/routes.js'
 import connectDB from './config/db.js';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 const app = express();
 connectDB();
