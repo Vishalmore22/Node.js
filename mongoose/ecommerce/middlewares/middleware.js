@@ -33,11 +33,10 @@ export const signinValidation = async (req, res, next) => {
 export const validateToken = async (req, res, next) => {
     try {
         const token = req.cookies.token;
-        if (!token) {
+        if (!token) {         
             res.status(400).json({
                 status: false,
                 message: "Token missing", 
-                err: err.message
             })
         }
         const result = jwt.verify(token, '!@#$%^&*()', { httpOnly: true, })
