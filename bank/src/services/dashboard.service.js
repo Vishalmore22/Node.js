@@ -14,16 +14,37 @@ export const getDashboardStatsService = async () => {
         },
     });
 
+    const activeEmployees = await User.countDocuments({
+        role: {
+            $in: ["branch_manager", "branch_employee"],
+        },
+        isActive: true,
+    });
+
+    const inactiveEmployees = await User.countDocuments({
+        role: {
+            $in: ["branch_manager", "branch_employee"],
+        },
+        isActive: false,
+    });
     const totalCustomers = await Customer.countDocuments();
 
-    const totalAccounts = await Account.countDocuments();
+    const totalAccounts = await Account.countDocuments({
+        status: { $ne: "closed" },
+    });
+
 
     const activeAccounts = await Account.countDocuments({
         status: "active",
     });
 
+
     const inactiveAccounts = await Account.countDocuments({
         status: "inactive",
+    });
+
+    const frozenAccounts = await Account.countDocuments({
+        status: "frozen",
     });
 
     const deposits = await Transaction.aggregate([
@@ -86,10 +107,13 @@ export const getDashboardStatsService = async () => {
     return {
         totalBranches,
         totalEmployees,
+        activeEmployees,
+        inactiveEmployees,
         totalCustomers,
         totalAccounts,
         activeAccounts,
         inactiveAccounts,
+        frozenAccounts,
         totalDeposits: deposits[0]?.total || 0,
         totalWithdrawals: withdrawals[0]?.total || 0,
         totalTransfers: transfers[0]?.total || 0,

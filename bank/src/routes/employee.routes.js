@@ -22,14 +22,14 @@ router.post(
 router.get(
     "/",
     authMiddleware,
-    authorize("admin"),
+    authorize("admin", "branch_manager", "branch_employee"),
     getAllEmployees
 );
 
 router.get(
     "/:id",
     authMiddleware,
-    authorize("admin"),
+    authorize("admin", "branch_manager", "branch_employee"),
     getEmployeeById
 );
 

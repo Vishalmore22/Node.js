@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+
 import {
   createCustomer,
   getCustomerById,
   updateCustomer,
 } from "../../services/customer.service";
+
 import { getBranches } from "../../services/branch.service";
 
 const CustomerForm = ({ isEdit = false }) => {
   const navigate = useNavigate();
+
   const { id } = useParams();
 
   const [loading, setLoading] = useState(false);
@@ -66,10 +69,10 @@ const CustomerForm = ({ isEdit = false }) => {
   useEffect(() => {
     fetchBranches();
 
-    if (isEdit) {
+    if (isEdit && id) {
       fetchCustomer();
     }
-  }, []);
+  }, [isEdit, id]);
 
   const fetchBranches = async () => {
     try {
@@ -82,27 +85,33 @@ const CustomerForm = ({ isEdit = false }) => {
 
   const fetchCustomer = async () => {
     try {
+      setLoading(true);
+
       const response = await getCustomerById(id);
 
       const customer = response.data;
 
       setFormData({
-        firstName: customer.firstName,
-        lastName: customer.lastName,
-        dateOfBirth: customer.dateOfBirth.split("T")[0],
-        gender: customer.gender,
-        phone: customer.phone,
-        email: customer.email,
-        aadhaarNumber: customer.aadhaarNumber,
-        panNumber: customer.panNumber,
-        address: customer.address,
-        city: customer.city,
-        state: customer.state,
-        pincode: customer.pincode,
-        branch: customer.branch._id,
+        firstName: customer.firstName || "",
+        lastName: customer.lastName || "",
+        dateOfBirth: customer.dateOfBirth
+          ? customer.dateOfBirth.split("T")[0]
+          : "",
+        gender: customer.gender || "male",
+        phone: customer.phone || "",
+        email: customer.email || "",
+        aadhaarNumber: customer.aadhaarNumber || "",
+        panNumber: customer.panNumber || "",
+        address: customer.address || "",
+        city: customer.city || "",
+        state: customer.state || "",
+        pincode: customer.pincode || "",
+        branch: customer.branch?._id || customer.branch || "",
       });
     } catch (error) {
-      console.log(error);
+      toast.error(error.response?.data?.message || "Failed to load customer");
+    } finally {
+      setLoading(false);
     }
   };
 

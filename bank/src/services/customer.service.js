@@ -1,9 +1,10 @@
 import Customer from "../models/Customer.js";
 import Branch from "../models/Branch.js";
+import Account from "../models/Account.js";
 
 export const createCustomerService = async (customerData, userId) => {
+
     const {
-        customerId,
         firstName,
         lastName,
         dateOfBirth,
@@ -18,11 +19,6 @@ export const createCustomerService = async (customerData, userId) => {
         pincode,
         branch,
     } = customerData;
-
-    // Duplicate Customer ID
-    if (await Customer.findOne({ customerId })) {
-        throw new Error("Customer ID already exists.");
-    }
 
     // Duplicate Phone
     if (await Customer.findOne({ phone })) {
@@ -46,6 +42,23 @@ export const createCustomerService = async (customerData, userId) => {
         throw new Error("Branch not found.");
     }
 
+    // Generate Customer ID
+    const lastCustomer = await Customer.findOne()
+        .sort({ createdAt: -1 })
+        .select("customerId");
+
+    let nextNumber = 1;
+
+    if (lastCustomer?.customerId) {
+        const lastNumber = parseInt(
+            lastCustomer.customerId.replace("CUS", "")
+        );
+
+        nextNumber = lastNumber + 1;
+    }
+
+    const customerId = `CUS${String(nextNumber).padStart(4, "0")}`;
+
     const customer = await Customer.create({
         customerId,
         firstName,
@@ -64,7 +77,16 @@ export const createCustomerService = async (customerData, userId) => {
         createdBy: userId,
     });
 
-    return customer;
+    return await customer.populate([
+        {
+            path: "branch",
+            select: "branchCode branchName city",
+        },
+        {
+            path: "createdBy",
+            select: "employeeId firstName lastName role",
+        },
+    ]);
 };
 
 export const getAllCustomersService = async () => {
@@ -100,6 +122,8 @@ export const updateCustomerService = async (
     if (!customer) {
         throw new Error("Customer not found.");
     }
+
+    const oldBranch = customer.branch;
 
     // Check duplicate phone
     if (
@@ -167,6 +191,25 @@ export const updateCustomerService = async (
     });
 
     await customer.save();
+
+    // If customer's branch changed,
+    // update all accounts belonging to this customer
+    if (
+        updateData.branch &&
+        updateData.branch.toString() !== oldBranch.toString()
+    ) {
+        await Account.updateMany(
+            {
+                customer: customer._id,
+                status: { $ne: "closed" },
+            },
+            {
+                $set: {
+                    branch: customer.branch,
+                },
+            }
+        );
+    }
 
     return await customer.populate([
         {

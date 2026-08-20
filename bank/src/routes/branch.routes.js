@@ -21,14 +21,14 @@ router.post(
 router.get(
     "/",
     authMiddleware,
-    authorize("admin"),
+    authorize("admin", "branch_manager", "branch_employee"),
     getAllBranches
 );
 
 router.get(
     "/:id",
     authMiddleware,
-    authorize("admin"),
+    authorize("admin", "branch_manager", "branch_employee"),
     getBranchById
 );
 

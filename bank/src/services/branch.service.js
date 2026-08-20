@@ -17,7 +17,6 @@ export const createBranchService = async (data) => {
 
 export const getAllBranchesService = async () => {
     const branches = await Branch.find({
-        isActive: true,
     }).sort({
         createdAt: -1,
     });

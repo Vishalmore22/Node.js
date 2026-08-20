@@ -6,6 +6,7 @@ const ViewCustomer = () => {
   const { id } = useParams();
 
   const [customer, setCustomer] = useState(null);
+  
 
   useEffect(() => {
     fetchCustomer();

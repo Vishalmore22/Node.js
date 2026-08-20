@@ -55,7 +55,7 @@ export const createAccountService = async (
 
     // Minimum Balance Validation
     const minimumBalance = {
-        savings: 500,
+        savings: 5000,
         current: 5000,
         fixed_deposit: 10000,
     };
@@ -120,7 +120,7 @@ export const getAllAccountsService = async () => {
     })
         .populate({
             path: "customer",
-            select: "customerId firstName lastName phone",
+            select: "customerId firstName lastName phone email city branch",
         })
 
         .populate({
